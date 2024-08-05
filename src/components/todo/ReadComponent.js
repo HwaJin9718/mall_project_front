@@ -4,7 +4,7 @@ import {getOne} from "../../api/todoApi";
 const initState = {
     tno : 0,
     title : '',
-    write : '',
+    writer : '',
     dueDate : '',
     complete : false
 }
@@ -23,7 +23,13 @@ function ReadComponent({tno}) {
     }, [tno]);
 
     return (
-        <div></div>
+        <div className="border-2 border-sky-200 mt-10 m-2 p-4">
+            {makeDiv('Tno', todo.tno)}
+            {makeDiv('Writer', todo.writer)}
+            {makeDiv('Title', todo.title)}
+            {makeDiv('Due Date', todo.dueDate)}
+            {makeDiv('Complete', todo.complete ? 'Completed' : 'Not Yet')}
+        </div>
     );
 }
 
