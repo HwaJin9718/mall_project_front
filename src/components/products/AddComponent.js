@@ -1,5 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {postAdd} from "../../api/productsApi";
+import FetchingModal from "../common/FetchingModal";
+import ResultModal from "../common/ResultModal";
+import useCustomMove from "../../hooks/useCustomMove";
 
 const initState = {
     pname: '',
@@ -15,6 +18,11 @@ function AddComponent(props) {
     const [product, setProduct] = useState(initState)
 
     const uploadRef = useRef()
+
+    const [fetching, setFetching] = useState(false)
+    const [result, setResult] = useState(false)
+
+    const {moveToList} = useCustomMove()
 
     // 파일 처리 시 기억할 것 : multipart/form-data 또는 FormData()
 
@@ -45,8 +53,17 @@ function AddComponent(props) {
 
         console.log(formData)
 
-        postAdd(formData)
+        setFetching(true)
+        postAdd(formData).then(data => {
+            setFetching(false)
+            setResult(data.result)
+        })
 
+    }
+
+    const closeModal = () => {
+        setResult(null)
+        moveToList({page:1})
     }
 
     return (
@@ -92,6 +109,13 @@ function AddComponent(props) {
                             onClick={handleClickAdd}>ADD</button>
                 </div>
             </div>
+
+            {fetching ? <FetchingModal/> : <></>}
+
+            {result ? <ResultModal
+                callBackFn={closeModal}
+                title={'Product Add Result'}
+                content={`${result}번 상품 등록 완료`}></ResultModal> : <></>}
 
         </div>
     );
