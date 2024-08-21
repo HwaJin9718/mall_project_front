@@ -6,6 +6,8 @@ const ProductList = lazy(() => import('../pages/products/ListPage'));
 
 const ProductAdd = lazy(() => import('../pages/products/AddPage'));
 
+const ProductRead = lazy(() => import('../pages/products/ReadPage'));
+
 const ProductsRouter = (props) => {
     return [
         {
@@ -19,6 +21,10 @@ const ProductsRouter = (props) => {
         {
             path: 'add',
             element: <Suspense fallback={Loading}><ProductAdd/></Suspense>
+        },
+        {
+            path: 'read/:pno',
+            element: <Suspense fallback={Loading}><ProductRead/></Suspense>
         }
     ]
 }
